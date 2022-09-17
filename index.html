@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+
+        }
+
+        body {
+            background-color: rgb(218, 217, 212);
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .start_game {
+            width: 500px;
+            height: 500px;
+            background-color: darkcyan;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: auto;
+           
+
+        }
+
+        .start_game.act-off {
+            display: none;
+        }
+
+        .start_game h2 {
+            font-size: 30px;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .start_game span {
+            font-size: 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .startbtn {
+            display: flex;
+            margin-top: 30px;
+            width: 200px;
+            height: 50px;
+            border: 0;
+            border-radius: 20px;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            color: darkcyan;
+
+
+        }
+
+        .gaming {
+            width: 50%;
+            height: 800px;
+            /* display: flex; */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            display: none;
+
+        }
+
+
+        .gaming-act {
+            display: block;
+        }
+
+        .act-flex {
+            display: flex;
+        }
+
+
+        #container {
+            width: 500px;
+            height: 500px;
+            background-color: beige;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+
+
+        .box {
+            border: 10px solid beige;
+            border-radius: 15px;
+        }
+
+        .box.answer.act {
+            box-shadow: 2px 2px 10px black;
+        }
+
+
+        .score {
+            width: 100px;
+            height: 50px;
+            background-color: darkslategray;
+            line-height: 50px;
+            top: 50px;
+            border-radius: 30px;
+            font-size: 30px;
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            align-items: center;
+            color: aliceblue;
+            margin-bottom: 20px;
+        }
+
+
+
+        .timebox {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        /* .timebox>.time{
+            justify-content: center;
+            align-items: center;
+            display: flex;
+        } */
+        .timebox>.time,
+        .stop,
+        .hint {
+            width: 180px;
+            height: 80px;
+
+            border-radius: 50px;
+            display: flex;
+            color: aliceblue;
+            font-size: 20px;
+            justify-content: center;
+            align-items: center;
+            border: 6px solid rgb(218, 217, 212);
+        }
+
+        .timebox>.time {
+            background-color: rgb(168, 104, 83);
+        }
+
+        .stop {
+            background-color: brown;
+        }
+
+        .hint {
+            background-color: darkred;
+        }
+
+        .end {
+            width: 500px;
+            height: 500px;
+            background-color: darkolivegreen;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            display: none;
+            font-size: 30px;
+            color: white;
+
+
+        }
+
+        .end-act {
+            display: flex;
+        }
+
+        .end>div {
+            margin-top: 20px;
+        }
+
+        .end1 {
+            font-size: 35px;
+        }
+
+
+
+        .end h2 {
+            font-size: 40px;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+
+        .restartbtn {
+            display: flex;
+            margin-top: 30px;
+            width: 200px;
+            height: 50px;
+            border: 0;
+            border-radius: 20px;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            color: darkslategrey;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="start_game off">
+        <h2>色弱遊戲</h2>
+        <span>點擊「start game」開始遊戲 <br>計時三十秒，點選顏色不同的色塊即得分，<br>點錯會扣分!點選SOS可獲得提示，同時會扣分!<br>開始吧!眼力大挑戰!</span>
+        <button class="startbtn">Start Game</button>
+    </div>
+
+    <div class="gaming">
+        <div class="score">得分</div>
+        <div id="container">
+        </div>
+
+        <div class="timebox">
+            <div class="time"></div>
+            <button class="stop">暫停計時</button>
+            <button class="hint">SOS</button>
+        </div>
+    </div>
+
+    <div class="end">
+        <h2> 遊戲結束</h2>
+        <div class="end1">總得分:</div>
+        <div class="end2">評語</div>
+        <button class="restartbtn">再試一次</button>
+    </div>
+
+    <script>
+        //遊戲開始->產生遊戲畫面
+        const startbtn = document.querySelector('.startbtn')
+        const score = document.querySelector('.score')
+        const timebox = document.querySelector('.timebox')
+        const gaming = document.querySelector('.gaming')
+        const start_game = document.querySelector('.start_game')
+        const end = document.querySelector('.end')
+
+
+        const time = document.querySelector('.time')
+        const container = document.querySelector('#container')
+        const result_score = document.querySelector('.end1')
+        const result_word = document.querySelector('.end2')
+
+        const stopbtn = document.querySelector('.stop')
+        const hintbtn = document.querySelector('.hint')
+        const restartbtn = document.querySelector('.restartbtn')
+
+        var timeleft
+        var level
+        var ans
+        var diffculty
+
+
+        startbtn.onclick = function () {
+            start_game.classList.add('act-off')
+            gaming.classList.add('act-flex')
+
+
+            score.innerHTML = 0
+            timeleft = 30
+            time.innerHTML = '剩餘時間' + timeleft + '秒'
+
+            level = 2
+            diffculty = 0.6
+
+            timebox.classList.add('act')
+            // time.classList.add('act')
+
+            // console.log(index);
+            // for (let index = 0; index < level * level; index++) {
+            //     container.innerHTML += `<div ="box" style ="width:${100 / level}%;height:${100 / level}%" ></div>`
+
+            // }
+
+
+            ans = Math.floor(Math.random() * (level * level))
+
+            r = Math.floor(Math.random() * 200)
+            g = Math.floor(Math.random() * 200)
+            b = Math.floor(Math.random() * 200)
+
+            // console.log(ans);
+            for (let index = 0; index < level * level; index++) {
+                if (index == ans) {
+                    container.innerHTML += `<div onclick="checkAnswer(true)" class="box answer" style ="width:${100 / level}%; height:${100 / level}%;background-color:rgb(${r},${g},${b});opacity:${diffculty};" ></div>`
+
+                } else {
+                    container.innerHTML += `<div onclick="checkAnswer(false)" class="box" style ="width:${100 / level}%; height:${100 / level}%;background-color:rgb(${r},${g},${b});"></div>`
+                }
+            }
+            // console.log(startwindow);
+            // startwindow.classList.add('off')
+
+            var timer1 = setInterval(function () {
+                timeleft = timeleft - 1
+                time.innerHTML = '剩餘時間' + timeleft + '秒'
+                if (timeleft == 0) {
+                    clearInterval(timer1)
+                    // start_game.classList.remove('act-off')
+                    gaming.classList.remove('act-flex')
+                    end.classList.add('end-act')
+                    score.classList.remove('act')
+                    timebox.classList.remove('act')
+                    time.classList.remove('act')
+                    container.classList.remove('act')
+                    container.innerHTML = ''
+
+
+                    //加上評語
+
+
+                    end.classList.add('act')
+                    result_score.innerHTML = '總得分：' + score.innerHTML + '分'
+                    if (score.innerHTML < 0) {
+                        result_word.innerHTML = '這樣的遊戲有很難嗎!?'
+                    } else if (score.innerHTML < 10) {
+                        result_word.innerHTML = 'WOW!這個分數有合理嗎?'
+                    } else if (score.innerHTML < 20) {
+                        result_word.innerHTML = '可以更好吧!?'
+                    } else if (score.innerHTML < 25) {
+                        result_word.innerHTML = '再加油一點會更好'
+                    } else if (score.innerHTML < 30) {
+                        result_word.innerHTML = '你快攻頂了!'
+                    } else {
+                        result_word.innerHTML = '不得了!全村的希望就是你!'
+                    }
+                }
+            }, 1000);
+        }
+
+        stopbtn.onclick = function () {
+            alert('逼逼逼!你想作弊!?')
+        }
+        hintbtn.onclick = function () {
+            score.innerHTML = score.innerHTML - 1
+            const ansbox = document.querySelector('.box.answer')
+            ansbox.classList.add('ans-act')
+
+
+        }
+
+        hintbtn.onclick = function () {
+            // 使用提示功能的扣分
+            score.innerHTML = score.innerHTML - 1
+            // 選取到正確答案的框框
+            const ansbox = document.querySelector('.box.answer')
+            // 將正確答案的框框加上css屬性變得更顯眼
+            ansbox.classList.add('act')
+        }
+
+
+
+        restartbtn.onclick = function () {
+            start_game.classList.remove('act-off');
+            end.classList.remove('end-act');
+
+        }
+
+
+        function checkAnswer(guess) {
+            if (guess) {
+                //答對+1分
+                score.innerHTML = parseInt(score.innerHTML) + 1
+                //清空題目
+                container.innerHTML = ''
+
+                if (score.innerHTML > 5 && level < 3) {
+                    level = 3
+                }
+                if (score.innerHTML > 10 && level < 4) {
+                    level = 4
+                }
+                if (score.innerHTML > 15 && level < 5) {
+                    level = 5
+                    diffculty = 0.7
+                }
+                if (score.innerHTML > 20 && level < 6) {
+                    level = 6
+                }
+                if (score.innerHTML > 25 && level < 7) {
+                    level = 7
+                    diffculty = 0.8
+                }
+
+
+                ans = Math.floor(Math.random() * (level * level))
+
+                r = Math.floor(Math.random() * 200)
+                g = Math.floor(Math.random() * 200)
+                b = Math.floor(Math.random() * 200)
+                console.log(ans);
+                for (let index = 0; index < level * level; index++) {
+                    if (index == ans) {
+                        container.innerHTML += `<div onclick="checkAnswer(true)" class="box answer" style ="width:${100 / level}%; height:${100 / level}%;background-color:rgb(${r},${g},${b});opacity:${diffculty};" ></div>`
+
+                    } else {
+                        container.innerHTML += `<div onclick="checkAnswer(false)" class="box" style ="width:${100 / level}%; height:${100 / level}%;background-color:rgb(${r},${g},${b});" ></div>`
+                    }
+                }
+
+            } else {
+                score.innerHTML = score.innerHTML - 1
+            }
+
+
+        }
+
+
+    </script>
+
+
+</body>
+
+</html>
